@@ -22,13 +22,13 @@ jobs:
 
     runs-on: windows-latest
     env:
-      libraryName: abseil-cpp
-      tag: '20230802.0'
-      cmakeInstallationPath: abseil-cpp-installation
+      libraryName: libxlsxwriter
+      tag: 'RELEASE_1.1.5'
+      cmakeInstallationPath: libxlsxwriter-installation
     steps:
       - name: git clone
         shell: cmd
-        run: git clone https://github.com/abseil/abseil-cpp.git && cd abseil-cpp && git checkout ${{ env.tag }}
+        run: git clone https://github.com/jmcnamara/libxlsxwriter.git && cd libxlsxwriter && git checkout ${{ env.tag }}
         
       - name: download compiler
         shell: cmd
@@ -53,7 +53,7 @@ jobs:
             ${{ github.workspace }}\cmake-3.24.0-windows-x86_64\bin;
             set CD_LINUX=%CD:\=/%
             gcc --version &&^
-            cd abseil-cpp &&^
+            cd libxlsxwriter &&^
             cmake.exe -G"MinGW Makefiles" ^
             -DCMAKE_BUILD_TYPE=Release ^
             -DBUILD_SHARED_LIBS=OFF ^
@@ -64,12 +64,12 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          directory: "abseil-cpp/cmake-build/${{ env.cmakeInstallationPath }}"
-          filename: "midifile-${{ github.ref_name }}-${{ matrix.compiler.name }}.zip"
+          directory: "libxlsxwriter/cmake-build/${{ env.cmakeInstallationPath }}"
+          filename: "libxlsxwriter-${{ github.ref_name }}-${{ matrix.compiler.name }}.zip"
         
       - name: Release prebuilt
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "abseil-cpp/cmake-build/${{ env.cmakeInstallationPath }}/midifile-${{ github.ref_name }}-${{ matrix.compiler.name }}.zip"
+          artifacts: "libxlsxwriter/cmake-build/${{ env.cmakeInstallationPath }}/libxlsxwriter-${{ github.ref_name }}-${{ matrix.compiler.name }}.zip"
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
